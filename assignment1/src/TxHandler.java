@@ -52,7 +52,7 @@ public class TxHandler {
      */
     public boolean isValidTx(Transaction tx) {
         final UTXOPool checkedUtxo = new UTXOPool();
-        int inputSum = 0;
+        double inputSum = 0;
 
         for (int index = 0; index < tx.numInputs(); index++) {
             final Transaction.Input input = tx.getInput(index);
@@ -71,7 +71,7 @@ public class TxHandler {
             inputSum += output.value;
         }
 
-        int outputSum = 0;
+        double outputSum = 0;
         for (final Transaction.Output output : tx.getOutputs()) {
             if (output.value < 0) {
                 return false; //4 -> output values from output
