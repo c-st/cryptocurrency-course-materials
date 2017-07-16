@@ -14,13 +14,18 @@ import java.security.*;
 
 public class Main {
 
-   public static void main(String[] args) throws NoSuchProviderException, NoSuchAlgorithmException, InvalidKeyException, SignatureException {
+    public static void main(String[] args)
+            throws
+            NoSuchProviderException,
+            NoSuchAlgorithmException,
+            InvalidKeyException,
+            SignatureException {
 
         /*
          * Generate key pairs, for Scrooge & Alice
          */
         KeyPair pk_scrooge = KeyPairGenerator.getInstance("RSA").generateKeyPair();
-        KeyPair pk_alice   = KeyPairGenerator.getInstance("RSA").generateKeyPair();
+        KeyPair pk_alice = KeyPairGenerator.getInstance("RSA").generateKeyPair();
 
         /*
          * Set up the root transaction:
@@ -44,7 +49,7 @@ public class Main {
          */
         // The transaction output of the root transaction is the initial unspent output.
         UTXOPool utxoPool = new UTXOPool();
-        UTXO utxo = new UTXO(tx.getHash(),0);
+        UTXO utxo = new UTXO(tx.getHash(), 0);
         utxoPool.addUTXO(utxo, tx.getOutput(0));
 
         /*  
@@ -76,11 +81,11 @@ public class Main {
         TxHandler txHandler = new TxHandler(utxoPool);
         System.out.println("txHandler.isValidTx(tx2) returns: " + txHandler.isValidTx(tx2));
         System.out.println("txHandler.handleTxs(new Transaction[]{tx2}) returns: " +
-            txHandler.handleTxs(new Transaction[]{tx2}).length + " transaction(s)");
+                txHandler.handleTxs(new Transaction[]{tx2}).length + " transaction(s)");
     }
 
 
-    public static class Tx extends Transaction { 
+    public static class Tx extends Transaction {
         public void signTx(PrivateKey sk, int input) throws SignatureException {
             Signature sig = null;
             try {
@@ -90,7 +95,7 @@ public class Main {
             } catch (NoSuchAlgorithmException | InvalidKeyException e) {
                 throw new RuntimeException(e);
             }
-            this.addSignature(sig.sign(),input);
+            this.addSignature(sig.sign(), input);
             // Note that this method is incorrectly named, and should not in fact override the Java
             // object finalize garbage collection related method.
             this.finalize();
